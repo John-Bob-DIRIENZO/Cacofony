@@ -4,7 +4,13 @@ namespace App\Core\Trait;
 
 trait DirectoryParser
 {
-    public function getClasses(string $directory, array &$results = [])
+    /**
+     * Returns an array with the complete classes names from a directory and its subdirectories
+     * @param string $directory
+     * @param array $results
+     * @return array
+     */
+    public function getClassesFromDirectory(string $directory, array &$results = []): array
     {
 
         $toRemove = implode('/', array_diff(explode('/', __DIR__), explode('\\', __NAMESPACE__)));

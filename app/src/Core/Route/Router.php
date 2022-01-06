@@ -2,7 +2,6 @@
 
 namespace App\Core\Route;
 
-use App\Controller\BaseController;
 use App\Controller\ErrorController;
 use App\Core\Trait\DirectoryParser;
 use ReflectionException;
@@ -19,7 +18,7 @@ class Router
      */
     public function getRoutesFromAnnotations(string $controllerDirectory): self
     {
-        $controllers = $this->getClasses($controllerDirectory);
+        $controllers = $this->getClassesFromDirectory($controllerDirectory);
         foreach ($controllers as $controller) {
             foreach (($reflection = new \ReflectionClass($controller))->getMethods() as $method) {
                 if ($method->getDocComment()) {
