@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - '5555:80'
+        env_file:
+            - .env
+            # - .env.local
+        volumes:
+            - ./app:/var/www/html
+
+    db:
+        image: 'mariadb:10.6.4'
+        restart: always
+        environment:
+            # See .env file
+            # MYSQL_DATABASE: data
+            # MYSQL_ROOT_PASSWORD: password
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        env_file:
+            - .env
+            # - .env.local
+        volumes:
+            # Pour lancer un dump automatiquement au montage du conteneur
+            - ./database/mt4-data.sql:/docker-entrypoint-initdb.d/mt4-data.sql
+
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - '8080:80'
+        environment:
+            - PMA_ARBITRARY=1
