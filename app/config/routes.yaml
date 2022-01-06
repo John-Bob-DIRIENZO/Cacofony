@@ -1,14 +1,14 @@
-homePage:
-    path: /
-    controller: \App\Controller\PostController
-    action: home
-
-showOne:
-    path: /show/{id}-{truc}
-    controller: \App\Controller\PostController
-    action: show
-
-showTest:
-    path: /show
-    controller: \App\Controller\PostController
-    action: showTest
+#homePage:
+#    path: /
+#    controller: \App\Controller\PostController
+#    action: home
+#
+#showOne:
+#    path: /show/{id}-{truc}
+#    controller: \App\Controller\PostController
+#    action: show
+#
+#showTest:
+#    path: /show
+#    controller: \App\Controller\PostController
+#    action: showTest

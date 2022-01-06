@@ -2,11 +2,7 @@
 
 require './../vendor/autoload.php';
 
-(new \App\Core\Route\Router('./../config/routes.yaml'))->run();
-
-
-
-
+(new \App\Core\Route\Router())->getRoutesFromAnnotations('./../src/Controller')->run();
 
 
 //$p = $_SERVER["REQUEST_URI"];
