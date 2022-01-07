@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\BaseClasse\BaseController;
+use Firebase\JWT\JWT;
 
 class SecurityController extends BaseController
 {
@@ -21,8 +22,10 @@ class SecurityController extends BaseController
      */
     public function postLogin()
     {
-        // TODO - Validate credentials and stock a JWT in session
-        var_dump($this->HTTPRequest->getRequest('email'), $_POST['password']);
+        // TODO - Validate credentials for real in DB and fill the payload with more infos
+        $jwt = JWT::encode(['user' => $this->HTTPRequest->getRequest('username')], $_ENV['APP_SECRET']);
+        $_SESSION['user_badge'] = $jwt;
+        $this->HTTPResponse->redirect('/');
     }
 
     /**
