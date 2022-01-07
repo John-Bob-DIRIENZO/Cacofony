@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <h1>Articles récents</h1>
+    {% include 'post/list.html.twig' with {'posts': posts} only %}
+
+{% endblock %}

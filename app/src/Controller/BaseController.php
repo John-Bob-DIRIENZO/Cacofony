@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use \Twig\Loader\FilesystemLoader;
+use \Twig\Environment;
+
 abstract class BaseController
 {
     public function __construct(string $action, array $params = [], string $method = 'get')
@@ -15,21 +18,20 @@ abstract class BaseController
         call_user_func_array([$this, $callable], $params);
     }
 
-    public function render(string $view, array $variables, string $pageTitle)
+    /**
+     * @param string $template
+     * @param array $args
+     */
+    public function render(string $template, array $args)
     {
-        $template = './../View/template.php';
-        $view = './../View/' . $view . '.php';
+        $loader = new FilesystemLoader('../templates');
+        $twig = new Environment($loader);
 
-        foreach ($variables as $key => $variable) {
+        foreach ($args as $key => $variable) {
             ${$key} = $variable;
         }
 
-        ob_start();
-        require $view;
-        $content = ob_get_clean();
-
-        $title = $pageTitle;
-        require $template;
+        echo $twig->render($template, $args);
         exit;
     }
 
