@@ -4,18 +4,23 @@ namespace App\Controller;
 
 use App\Core\BaseClasse\BaseController;
 use App\Manager\PostManager;
+use App\Service\ExampleService;
 
 class PostController extends BaseController
 {
     /**
      * @Route(path="/", name="homePage")
      * @param PostManager $postManager
+     * @param ExampleService $service
      * @return void
      */
-    public function getHome(PostManager $postManager)
+    public function getHome(PostManager $postManager, ExampleService $service)
     {
         $posts = $postManager->findAll();
-        $this->render('Frontend/home', ['posts' => $posts], 'Le titre de la page');
+        $this->render('Frontend/home', [
+            'posts' => $posts,
+            'strongText' => $service->getStrong('je suis du texte qui vient d\'un service en autowiring')
+        ], 'Le titre de la page');
     }
 
     /**

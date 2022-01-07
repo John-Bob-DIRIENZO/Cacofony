@@ -17,6 +17,8 @@ use App\Entity\Post;
 
 <h1>Je suis la page d'accueil</h1>
 
+<p><?= $strongText; ?></p>
+
 <ul>
     <?php /** @var $posts Post[] */
     foreach ($posts as $post) : ?>
