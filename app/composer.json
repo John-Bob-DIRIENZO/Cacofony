@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "firebase/php-jwt": "^5.5"
+        "firebase/php-jwt": "^5.5",
+        "psr/container": "^2.0"
     }
 }

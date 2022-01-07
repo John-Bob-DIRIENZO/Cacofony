@@ -2,7 +2,9 @@
 
 namespace App\Core\Factory;
 
-class PDOFactory
+use App\Core\Interfaces\FactoryInterface;
+
+class PDOFactory implements FactoryInterface
 {
     private string $user = 'root';
     private static array $instances = [];
@@ -40,12 +42,17 @@ class PDOFactory
         // TODO - add real connection
     }
 
-    public static function getInstance(string $type = PDOFactory::MYSQL): \PDO
+    public function getPDO(): \PDO
+    {
+        return $this->pdo;
+    }
+
+    public static function getInstance(string $type = PDOFactory::MYSQL): PDOFactory
     {
         if (!isset(self::$instances[$type])) {
             self::$instances[$type] = new PDOFactory($type);
         }
 
-        return self::$instances[$type]->pdo;
+        return self::$instances[$type];
     }
 }

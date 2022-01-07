@@ -3,19 +3,18 @@
 namespace App\Controller;
 
 use App\Core\BaseClasse\BaseController;
-use App\Core\Factory\PDOFactory;
 use App\Manager\PostManager;
 
 class PostController extends BaseController
 {
     /**
      * @Route(path="/", name="homePage")
+     * @param PostManager $postManager
      * @return void
      */
-    public function getHome()
+    public function getHome(PostManager $postManager)
     {
-        $manager = new PostManager(PDOFactory::getInstance());
-        $posts = $manager->findAll();
+        $posts = $postManager->findAll();
         $this->render('Frontend/home', ['posts' => $posts], 'Le titre de la page');
     }
 
@@ -23,12 +22,15 @@ class PostController extends BaseController
      * @Route(path="/show/{id}-{truc}", name="showOne")
      * @param int $id
      * @param string $truc
+     * @param PostManager $postManager
      * @return void
      */
-    public function getShow(int $id, string $truc)
+    public function getShow(int $id, string $truc, PostManager $postManager)
     {
-        $manager = new PostManager(PDOFactory::getInstance());
-        $post = $manager->findOneBy('id', $id);
+        $post = $postManager->findOneBy('id', $id);
+        if (!$post) {
+            $this->HTTPResponse->redirect('/');
+        }
         $this->render('Frontend/showOne', ['post' => $post], $truc);
     }
 

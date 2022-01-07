@@ -10,18 +10,16 @@ abstract class BaseController
     protected HTTPRequest $HTTPRequest;
     protected HTTPResponse $HTTPResponse;
 
-    public function __construct(string $action, array $params = [], string $method = 'get')
+    public function __construct(string $action, array $params = [])
     {
         $this->HTTPRequest = new HTTPRequest();
         $this->HTTPResponse = new HTTPResponse();
 
-        $callable = strtolower($method) . ucfirst($action);
-
-        if (!is_callable([$this, $callable])) {
-            throw new \RuntimeException("La méthode $callable n'est pas disponible");
+        if (!is_callable([$this, $action])) {
+            throw new \RuntimeException("La méthode $action n'est pas disponible");
         }
 
-        call_user_func_array([$this, $callable], $params);
+        call_user_func_array([$this, $action], $params);
     }
 
     public function render(string $view, array $variables, string $pageTitle)

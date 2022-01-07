@@ -3,6 +3,8 @@
 namespace App\Core\Route;
 
 use App\Controller\ErrorController;
+use App\Core\DIC\DIC;
+use App\Core\Entity\Dependency;
 use App\Core\Helper\Regex;
 use App\Core\Trait\DirectoryParser;
 use ReflectionException;
@@ -74,8 +76,30 @@ class Router
         foreach ($this->routes as $route) {
             if ($route->match($uri)) {
                 $controllerClass = $route->getController();
+
+                $controllerActionName = strtolower($_SERVER['REQUEST_METHOD']) . ucfirst($route->getAction());
+
+                foreach ((new \ReflectionClass($controllerClass))->getMethods() as $method) {
+                    if ($method->getName() === $controllerActionName) {
+                        foreach ($method->getParameters() as $parameter) {
+                            $dependencies[] = (new Dependency())
+                                ->setName($parameter->getName())
+                                ->setType($parameter->getType()->getName())
+                                ->setFromURL($parameter->getType()->isBuiltin());
+                        }
+                    }
+                }
+
                 $params = $route->mergeParams($uri);
-                return new $controllerClass($route->getAction(), $params, $_SERVER['REQUEST_METHOD']);
+
+                foreach ($dependencies ?? [] as $dependency) {
+                    if ($dependency->isFromURL()) {
+                        $finalParams[$dependency->getName()] = $params[$dependency->getName()];
+                    } else {
+                        $finalParams[$dependency->getName()] = DIC::autowire($dependency->getType());
+                    }
+                }
+                return new $controllerClass($controllerActionName, $finalParams ?? []);
             }
         }
         return new ErrorController('noRoute');

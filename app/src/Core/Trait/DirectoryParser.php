@@ -25,7 +25,7 @@ trait DirectoryParser
                 $namespace = str_replace('/', '\\', $baseNamespace . str_replace($toRemove, '', pathinfo($realPath)['dirname']));
                 $results[] = $namespace . '\\' . $filename;
             } elseif ($file !== '.' && $file !== '..') {
-                $this->getClasses($realPath, $results);
+                $this->getClassesFromDirectory($realPath, $results);
             }
         }
 

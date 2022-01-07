@@ -3,15 +3,17 @@
 namespace App\Core\BaseClasse;
 
 
+use App\Core\Interfaces\FactoryInterface;
+
 abstract class BaseManager
 {
     protected \PDO $pdo;
     protected string $shortEntityName;
     protected string $entityName;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(FactoryInterface $factory)
     {
-        $this->pdo = $pdo;
+        $this->pdo = $factory->getPDO();
         $this->shortEntityName = str_replace('Manager', '', (new \ReflectionClass($this))->getShortName());
         $this->entityName = 'App\\Entity\\' . $this->shortEntityName;
     }
