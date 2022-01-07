@@ -13,12 +13,16 @@ class ApiController extends BaseController {
      * @return void
      * @throws \JsonException
      */
-    public function getApi($entity, $crudType)
+    public function getApi($crudType)
     {
         header('Content-Type: application/json; charset=utf-8');
         $this->manager = new ApiManager(PDOFactory::getInstance());
 
         echo (is_callable([$this, $crudType])) ? $this->{$crudType}() : $this->throwJSONerror("Type de rêquete CRUD inexistant");
+    }
+
+    public function count() {
+        return $this->manager->count("Post");
     }
 
     /**

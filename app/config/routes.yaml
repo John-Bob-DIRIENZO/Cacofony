@@ -12,6 +12,10 @@
 #    path: /show
 #    controller: \App\Controller\PostController
 #    action: showTest
+#insertTest:
+#    path: /insertTest
+#    controller: \App\Controller\PostController
+#    action: insertTest
 #api:
 #    path: /api/{crudType}
 #    controller: \App\Controller\ApiController

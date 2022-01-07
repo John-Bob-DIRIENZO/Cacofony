@@ -7,6 +7,7 @@ use App\Entity\Post;
 
 class PostManager extends BaseManager
 {
+
     public function findAllPosts()
     {
         $query = 'SELECT * FROM Post';
@@ -16,4 +17,5 @@ class PostManager extends BaseManager
 
         return new Post($result);
     }
+
 }
