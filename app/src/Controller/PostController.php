@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\BaseClasse\BaseController;
 use App\Core\Factory\PDOFactory;
 use App\Manager\PostManager;
 
@@ -15,9 +16,9 @@ class PostController extends BaseController
     {
         $manager = new PostManager(PDOFactory::getInstance());
 
-        $post = $manager->findAllPosts();
+        $posts = $manager->findAll();
 
-        $this->render('Frontend/home', ['francis' => $post], 'le titre de la page');
+        $this->render('Frontend/home', ['posts' => $posts], 'le titre de la page');
     }
 
     /**
@@ -28,7 +29,9 @@ class PostController extends BaseController
      */
     public function getShow(int $id, string $truc)
     {
-        $this->renderJSON(['message' => $truc, 'parametre' => $id]);
+        $manager = new PostManager(PDOFactory::getInstance());
+        $post = $manager->findOneBy('id', $id);
+        $this->render('Frontend/showOne', ['post' => $post], $truc);
     }
 
     /**
@@ -37,6 +40,15 @@ class PostController extends BaseController
      */
     public function getShowTest()
     {
-        echo 'je suis bien la bonne méthode';
+        $this->renderJSON(['message' => 'Je suis bien la bonne méthode']);
+    }
+
+    /**
+     * @Route(path="/show")
+     * @return void
+     */
+    public function postShowTest()
+    {
+        $this->renderJSON(['message' => 'Ca marche aussi en fonction de la méthode, testez moi !']);
     }
 }

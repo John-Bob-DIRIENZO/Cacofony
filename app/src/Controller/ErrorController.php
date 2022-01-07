@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Core\BaseClasse\BaseController;
+
 class ErrorController extends BaseController
 {
     public function getNoRoute()

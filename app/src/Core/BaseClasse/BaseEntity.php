@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Core\BaseClasse;
 
 use App\Core\Trait\Hydrator;
 

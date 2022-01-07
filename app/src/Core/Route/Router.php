@@ -9,7 +9,6 @@ use ReflectionException;
 
 class Router
 {
-    private array $routesArray = [];
     private array $routes = [];
 
     use DirectoryParser;
@@ -46,14 +45,12 @@ class Router
         }
 
         foreach ($results as $action => $config) {
-            $routes[$config['name'] ?? 'app_' . $action] = [
-                'path' => $config['path'],
-                'controller' => $config['controller'],
-                'action' => lcfirst(str_replace(['get', 'post', 'put', 'patch', 'delete'], '', $action)),
-            ];
+            $routeName = $config['name'] ?? 'app_' . $action;
+            unset($config['name']);
+            $config['action'] = lcfirst(str_replace(['get', 'post', 'put', 'patch', 'delete'], '', $action));
+            $this->routes[] = new Route($routeName, $config);
         }
 
-        $this->routesArray = $routes;
         return $this;
     }
 
@@ -63,17 +60,16 @@ class Router
             throw new \InvalidArgumentException('Ficher non trouvé');
         }
 
-        $this->routesArray = yaml_parse_file($routesFilePath);
+        foreach (yaml_parse_file($routesFilePath) as $name => $config) {
+            $this->routes[] = new Route($name, $config);
+        }
+
         return $this;
     }
 
     public function run()
     {
         $uri = '/' . trim(explode('?', $_SERVER["REQUEST_URI"])[0], '/');
-
-        foreach ($this->routesArray as $name => $config) {
-            $this->routes[] = new Route($name, $config);
-        }
 
         foreach ($this->routes as $route) {
             if ($route->match($uri)) {
