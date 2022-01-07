@@ -3,6 +3,7 @@
 namespace App\Core\Route;
 
 use App\Controller\ErrorController;
+use App\Core\Helper\Regex;
 use App\Core\Trait\DirectoryParser;
 use ReflectionException;
 
@@ -18,14 +19,19 @@ class Router
      */
     public function getRoutesFromAnnotations(string $controllerDirectory): self
     {
+        if (!is_dir($controllerDirectory)) {
+            throw new \InvalidArgumentException('Chemin non valide');
+        }
+
         $controllers = $this->getClassesFromDirectory($controllerDirectory);
         foreach ($controllers as $controller) {
             foreach (($reflection = new \ReflectionClass($controller))->getMethods() as $method) {
                 if ($method->getDocComment()) {
-                    preg_match('#@Route\((.+)\)#', $method->getDocComment(), $routeBloc);
-                    if (isset($routeBloc[1])) {
+
+                    if ($routeBloc = Regex::readFromDocBloc("Route", $method->getDocComment())) {
                         $results[$method->getName()]['controller'] = $reflection->getName();
-                        $routesConfig = explode(',', str_replace(' ', '', $routeBloc[1]));
+                        $routesConfig = explode(',', str_replace(' ', '', $routeBloc));
+
                         foreach ($routesConfig as $routeConfig) {
                             preg_match('#(.+)="(.+)"#', $routeConfig, $matches);
                             $results[$method->getName()][$matches[1]] = $matches[2];
@@ -35,11 +41,15 @@ class Router
             }
         }
 
+        if (!isset($results)) {
+            throw  new \RuntimeException('Il semble qu\'aucune annotation n\'ait été trouvé');
+        }
+
         foreach ($results as $action => $config) {
             $routes[$config['name'] ?? 'app_' . $action] = [
                 'path' => $config['path'],
                 'controller' => $config['controller'],
-                'action' => lcfirst(str_replace(['get', 'post', 'put', 'path', 'delete'], '', $action)),
+                'action' => lcfirst(str_replace(['get', 'post', 'put', 'patch', 'delete'], '', $action)),
             ];
         }
 
