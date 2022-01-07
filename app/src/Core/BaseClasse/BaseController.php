@@ -2,10 +2,19 @@
 
 namespace App\Core\BaseClasse;
 
+use App\Core\HTTPFoundation\HTTPRequest;
+use App\Core\HTTPFoundation\HTTPResponse;
+
 abstract class BaseController
 {
+    protected HTTPRequest $HTTPRequest;
+    protected HTTPResponse $HTTPResponse;
+
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
+        $this->HTTPRequest = new HTTPRequest();
+        $this->HTTPResponse = new HTTPResponse();
+
         $callable = strtolower($method) . ucfirst($action);
 
         if (!is_callable([$this, $callable])) {
