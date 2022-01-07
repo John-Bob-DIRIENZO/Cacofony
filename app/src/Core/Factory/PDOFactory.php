@@ -32,7 +32,7 @@ class PDOFactory
 
     private function getMysqlConnection(): \PDO
     {
-        return new \PDO('mysql:host=db;dbname=' . $_ENV['MYSQL_DATABASE'], $this->user, $_ENV['MYSQL_ROOT_PASSWORD']);
+        return new \PDO('mysql:host=db;dbname=' . $_ENV['MYSQL_DATABASE'], $this->user, $_ENV['MYSQL_ROOT_PASSWORD'], array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING, \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC));
     }
 
     private function getPostgresConnection()

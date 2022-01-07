@@ -12,3 +12,7 @@
 #    path: /show
 #    controller: \App\Controller\PostController
 #    action: showTest
+#api:
+#    path: /api/{crudType}
+#    controller: \App\Controller\ApiController
+#    action: api

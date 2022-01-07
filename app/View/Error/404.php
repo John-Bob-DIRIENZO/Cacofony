@@ -1,1 +1,1 @@
-<h1>Il semble que tu t'es perdu...</h1>
+<h1>Error 404</h1>
