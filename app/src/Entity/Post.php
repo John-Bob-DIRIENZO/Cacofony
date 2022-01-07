@@ -7,8 +7,8 @@ use Exception;
 
 class Post extends BaseEntity
 {
-    private int $id;
-    private DateTime $createdAt;
+    private int $idPost;
+    private string $createdAt;
     private string $title;
     private string $content;
     private int $authorId;
@@ -16,9 +16,9 @@ class Post extends BaseEntity
     /**
      * @return int
      */
-    public function getId(): int
+    public function getIdPost(): int
     {
-        return $this->id;
+        return $this->idPost;
     }
 
     /**
@@ -32,9 +32,9 @@ class Post extends BaseEntity
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
@@ -46,7 +46,7 @@ class Post extends BaseEntity
      */
     public function setCreatedAt(string $createdAt): self
     {
-        $this->createdAt = new DateTime($createdAt);
+        $this->createdAt = $createdAt;
         return $this;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Factory\PDOFactory;
+use App\Entity\Post;
 use App\Manager\PostManager;
 
 class PostController extends BaseController
@@ -15,9 +16,8 @@ class PostController extends BaseController
     {
         $manager = new PostManager(PDOFactory::getInstance());
 
-        $post = $manager->findAllPosts();
-
-        $this->render('Frontend/home', ['francis' => $post], 'le titre de la page');
+        $posts = $manager->findAllPosts();
+        $this->render('index.html.twig', ['posts' => $posts]);
     }
 
     /**
@@ -38,5 +38,22 @@ class PostController extends BaseController
     public function getShowTest()
     {
         echo 'je suis bien la bonne méthode';
+    }
+
+    /**
+     * @Route(path="/insertTest", name="insertTest")
+     * @return void
+     */
+    public function getInsertTest()
+    {
+        $manager = new PostManager(PDOFactory::getInstance());
+        $monPost = new Post(array(
+            "title" => "Test BDD",
+            "content" => "Yoloo",
+            "authorId" => 1,
+            "createdAt" => date("Y-m-d")
+            ));
+
+        if ($manager->insert($monPost)) echo "OK";
     }
 }
