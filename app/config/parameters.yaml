@@ -1,0 +1,3 @@
+parameters:
+    string $appSecret: 'Je suis un paramètre'
+    int $test: 123

@@ -38,6 +38,19 @@ class DIC implements ContainerInterface
         return array_key_exists($id, self::$registry);
     }
 
+    public function injectParameters(string $yamlFile): self
+    {
+        if (!file_exists($yamlFile)) {
+            throw new \InvalidArgumentException('Ficher non trouvé');
+        }
+
+        foreach (yaml_parse_file($yamlFile)['parameters'] as $name => $parameter) {
+            $this->set($name, function () use ($parameter) { return $parameter;});
+        }
+
+        return $this;
+    }
+
     /**
      * @throws ReflectionException
      */
@@ -73,8 +86,13 @@ class DIC implements ContainerInterface
             $constructorDependencies = [];
             if (($reflection = new \ReflectionClass($class))->getConstructor()) {
                 foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+                    // If it's a builtin parameter, it should have been manually injected
+                    // to be able to have a unique identifier in the container, the name of a
+                    // manually injected parameter is <varType><$varName>
                     if (!$parameter->getType()->isBuiltin()) {
                         $constructorDependencies[] = $this->get($parameter->getType()->getName());
+                    } else {
+                        $constructorDependencies[] = $this->get($parameter->getType()->getName() . ' $' . $parameter->getName());
                     }
                 }
             }

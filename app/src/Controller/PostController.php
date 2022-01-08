@@ -19,7 +19,8 @@ class PostController extends BaseController
         $posts = $postManager->findAll();
         $this->render('Frontend/home', [
             'posts' => $posts,
-            'strongText' => $service->getStrong('je suis du texte qui vient d\'un service en autowiring')
+            'strongText' => $service->getStrong('je suis du texte qui vient d\'un service en autowiring'),
+            'appSecret' => $service->getAppSecret()
         ], 'Le titre de la page');
     }
 
