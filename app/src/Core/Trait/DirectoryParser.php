@@ -4,6 +4,8 @@ namespace App\Core\Trait;
 
 trait DirectoryParser
 {
+    use FileParser;
+
     /**
      * Returns an array with the complete classes names from a directory and its subdirectories
      * @param string $directory
@@ -12,18 +14,23 @@ trait DirectoryParser
      */
     public function getClassesFromDirectory(string $directory, array &$results = []): array
     {
-
-        $toRemove = implode('/', array_diff(explode('/', __DIR__), explode('\\', __NAMESPACE__)));
-        $baseNamespace = array_diff(explode('\\', __NAMESPACE__), explode('/', __DIR__))[0];
+        $autoload = $this->getNamespacesFromComposerJson('/var/www/html/composer.json');
 
         $files = scandir($directory);
 
         foreach ($files as $file) {
             $realPath = realpath($directory . DIRECTORY_SEPARATOR . $file);
+
             if (!is_dir($realPath)) {
-                $filename = pathinfo($realPath)['filename'];
-                $namespace = str_replace('/', '\\', $baseNamespace . str_replace($toRemove, '', pathinfo($realPath)['dirname']));
-                $results[] = $namespace . '\\' . $filename;
+                foreach ($autoload as $namespace => $dir) {
+                    $path = stristr($realPath, trim($dir, '/'));
+                    if ($path) {
+                        $extension = '.' . pathinfo($realPath)["extension"];
+                        $dirnameReplacedByNamespace = str_replace($dir, $namespace, $path);
+                        $withBackSlash = str_replace('/', '\\', $dirnameReplacedByNamespace);
+                        $results[] = str_replace($extension, '', $withBackSlash);
+                    }
+                }
             } elseif ($file !== '.' && $file !== '..') {
                 $this->getClassesFromDirectory($realPath, $results);
             }
