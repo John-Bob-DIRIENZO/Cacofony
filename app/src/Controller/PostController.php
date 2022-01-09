@@ -34,6 +34,7 @@ class PostController extends BaseController
     public function getShow(int $id, string $truc, PostManager $postManager)
     {
         $post = $postManager->findOneBy('id', $id);
+
         if (!$post) {
             $this->HTTPResponse->redirect('/');
         }

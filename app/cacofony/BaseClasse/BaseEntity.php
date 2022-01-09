@@ -30,4 +30,16 @@ abstract class BaseEntity
     {
         $this->hydrate($data);
     }
+
+//    public function __serialize(): array
+//    {
+//        $reflection = new \ReflectionClass($this);
+//        foreach ($reflection->getProperties() as $property) {
+//            $method = 'get' . ucfirst($property->getName());
+//            if (is_callable([$this, $method])) {
+//                $return[$property->getName()] = $this->$method();
+//            }
+//        }
+//        return $return ?? [];
+//    }
 }

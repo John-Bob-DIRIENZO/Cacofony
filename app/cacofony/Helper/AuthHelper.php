@@ -30,4 +30,14 @@ class AuthHelper
         }
         return $user;
     }
+
+    public static function login(array $userInfos)
+    {
+
+    }
+
+    public static function logout(): void
+    {
+        session_destroy();
+    }
 }

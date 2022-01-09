@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cacofony\BaseClasse\BaseController;
+use Cacofony\Helper\AuthHelper;
 use Firebase\JWT\JWT;
 
 class SecurityController extends BaseController
@@ -34,7 +35,7 @@ class SecurityController extends BaseController
      */
     public function getLogout()
     {
-        session_destroy();
+        AuthHelper::logout();
         $this->HTTPResponse->redirect('/');
     }
 }
