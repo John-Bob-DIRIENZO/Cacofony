@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Factory;
+namespace Cacofony\Factory;
 
-use App\Core\Interfaces\FactoryInterface;
+use Cacofony\Interfaces\FactoryInterface;
 
 class PDOFactory implements FactoryInterface
 {

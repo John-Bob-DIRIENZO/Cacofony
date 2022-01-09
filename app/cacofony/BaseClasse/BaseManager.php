@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\BaseClasse;
+namespace Cacofony\BaseClasse;
 
 
-use App\Core\Interfaces\FactoryInterface;
+use Cacofony\Interfaces\FactoryInterface;
 
 abstract class BaseManager
 {

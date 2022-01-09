@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Helper;
+namespace Cacofony\Helper;
 
 class Regex
 {

@@ -5,11 +5,11 @@ require './../vendor/autoload.php';
 //var_dump((new \Cacofony\Test())->getClassesFromDirectory('./../src')); die;
 
 
-(new \App\Core\DIC\DIC())
+(new \Cacofony\DIC\DIC())
     ->injectParameters('./../config/parameters.yaml')
-    ->run('./../src');
+    ->run('./../src', './../cacofony');
 
-(new \App\Core\Route\Router())
+(new \Cacofony\Route\Router())
     ->getRoutesFromAnnotations('./../src/Controller')
     ->run();
 

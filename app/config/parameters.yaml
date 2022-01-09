@@ -1,3 +1,5 @@
 parameters:
+    string $baseDir: '/var/www/html/'
+    string $composerJson: '/var/www/html/composer.json'
     string $appSecret: 'Je suis un paramètre'
     int $test: 123

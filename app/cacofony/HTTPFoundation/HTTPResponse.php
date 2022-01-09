@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\HTTPFoundation;
+namespace Cacofony\HTTPFoundation;
 
 class HTTPResponse
 {

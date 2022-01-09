@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Route;
+namespace Cacofony\Route;
 
-use App\Core\Trait\Hydrator;
+use Cacofony\Trait\Hydrator;
 
 class Route
 {

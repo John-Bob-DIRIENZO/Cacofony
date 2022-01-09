@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core\Route;
+namespace Cacofony\Route;
 
 use App\Controller\ErrorController;
-use App\Core\DIC\DIC;
-use App\Core\Entity\Dependency;
-use App\Core\Helper\Regex;
-use App\Core\Trait\DirectoryParser;
+use Cacofony\DIC\DIC;
+use Cacofony\Entity\Dependency;
+use Cacofony\Helper\Regex;
+use Cacofony\Trait\DirectoryParser;
 use ReflectionException;
 
 class Router

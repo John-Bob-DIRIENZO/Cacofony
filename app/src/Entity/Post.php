@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Core\BaseClasse\BaseEntity;
+use Cacofony\BaseClasse\BaseEntity;
 use DateTime;
 use Exception;
 

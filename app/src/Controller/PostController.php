@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Core\BaseClasse\BaseController;
+use Cacofony\BaseClasse\BaseController;
 use App\Manager\PostManager;
 use App\Service\ExampleService;
 

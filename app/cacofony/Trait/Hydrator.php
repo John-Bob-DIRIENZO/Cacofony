@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Trait;
+namespace Cacofony\Trait;
 
 trait Hydrator
 {

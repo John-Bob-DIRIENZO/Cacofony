@@ -2,7 +2,7 @@
 
 namespace App\Manager;
 
-use App\Core\BaseClasse\BaseManager;
+use Cacofony\BaseClasse\BaseManager;
 
 class PostManager extends BaseManager
 {

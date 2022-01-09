@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\BaseClasse;
+namespace Cacofony\BaseClasse;
 
-use App\Core\Trait\Hydrator;
+use Cacofony\Trait\Hydrator;
 
 abstract class BaseEntity
 {

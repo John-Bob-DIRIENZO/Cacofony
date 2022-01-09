@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Entity;
+namespace Cacofony\Entity;
 
 class Dependency
 {

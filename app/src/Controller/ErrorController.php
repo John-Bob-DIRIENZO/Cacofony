@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Core\BaseClasse\BaseController;
+use Cacofony\BaseClasse\BaseController;
 
 class ErrorController extends BaseController
 {

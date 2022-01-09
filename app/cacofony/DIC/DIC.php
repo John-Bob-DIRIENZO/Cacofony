@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\DIC;
+namespace Cacofony\DIC;
 
-use App\Core\Trait\DirectoryParser;
+use Cacofony\Trait\DirectoryParser;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -54,9 +54,24 @@ class DIC implements ContainerInterface
     /**
      * @throws ReflectionException
      */
-    public function run(string $srcDir)
+    public function run(string $srcDir, string $framworkDir)
     {
-        // This first run is to get all the classes with interfaces and their instanciation method
+        // This gets all the interfaces from the framework directory
+        foreach ($this->getClassesFromDirectory($framworkDir) as $class) {
+            if ($interfaces = ($reflection = new \ReflectionClass($class))->getInterfaces()) {
+                foreach ($interfaces as $interface) {
+                    $this->set($interface->getName(), function () use ($reflection) {
+                        try {
+                            return $reflection->newInstance();
+                        } catch (ReflectionException $e) {
+                            return call_user_func([$reflection->getName(), 'getInstance']);
+                        }
+                    });
+                }
+            }
+        }
+
+        // This gets all the interfaces from the 'user' directory
         foreach ($this->getClassesFromDirectory($srcDir) as $class) {
             if ($interfaces = ($reflection = new \ReflectionClass($class))->getInterfaces()) {
                 foreach ($interfaces as $interface) {
@@ -71,13 +86,14 @@ class DIC implements ContainerInterface
             }
         }
 
+
         // Second run to get all the classes and inject their dependencies in the constructor
         // We should not add entities and BaseEntity to the container
+        $toExclude = [];
+        foreach (yaml_parse_file('./../config/autowiring.yaml')["autowiring"]["exclude"] as $exlusion) {
+            $toExclude = array_merge($this->getClassesFromDirectory($exlusion), $toExclude);
 
-        // TODO - Récupérer ces infos d'un fichier de config, c'est moche en dur !
-        $entities = $this->getClassesFromDirectory(__DIR__ . '/../../Entity');
-        $controllers = $this->getClassesFromDirectory(__DIR__ . '/../../Controller');
-        $toExclude = array_merge($controllers, $entities, $this->getClassesFromDirectory(__DIR__ . '/../../Core'));
+        }
 
         foreach ($this->getClassesFromDirectory($srcDir) as $class) {
             if (in_array($class, $toExclude)) {

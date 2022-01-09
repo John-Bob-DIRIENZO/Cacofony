@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\BaseClasse;
+namespace Cacofony\BaseClasse;
 
-use App\Core\HTTPFoundation\HTTPRequest;
-use App\Core\HTTPFoundation\HTTPResponse;
+use Cacofony\HTTPFoundation\HTTPRequest;
+use Cacofony\HTTPFoundation\HTTPResponse;
 
 abstract class BaseController
 {

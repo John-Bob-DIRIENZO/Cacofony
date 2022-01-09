@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Helper\AuthHelper;
+use Cacofony\Helper\AuthHelper;
 use App\Entity\Post;
 
 ?>
