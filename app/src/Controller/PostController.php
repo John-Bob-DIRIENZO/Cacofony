@@ -53,7 +53,6 @@ class PostController extends BaseController
             "authorId" => 1,
             "createdAt" => date("Y-m-d")
             ));
-
         if ($manager->insert($monPost)) echo "OK";
     }
 
@@ -68,7 +67,6 @@ class PostController extends BaseController
             "title" => "Test Update"
         );
         $where = array("column" => "idPost =", "value" => 2);
-
         if ($manager->update($monPost, $where)) echo "OK";
     }
 
@@ -79,7 +77,11 @@ class PostController extends BaseController
     public function getPost(int $id)
     {
         $postManager = new PostManager(PDOFactory::getInstance());
-        var_dump($postManager->find("title", ["column" => "idPost !=", "value" => 1], ["limit" => 2, "order" => "idPost DESC"]));
+        $columns = "idPost, title, content";
+        $where = array("column" => "idPost !=", "value" => 1);
+        $options = array("limit" => 2, "order" => "idPost DESC");
+        $foundPost = $postManager->find($columns, $where, $options);
+        var_dump($foundPost);
     }
 
     /**
@@ -89,6 +91,7 @@ class PostController extends BaseController
     public function getDeletePost(int $id)
     {
         $postManager = new PostManager(PDOFactory::getInstance());
-        var_dump($postManager->delete(["column" => "idPost =", "value" => $id]));
+        $where = array("column" => "idPost =", "value" => $id);
+        var_dump($postManager->delete($where));
     }
 }
