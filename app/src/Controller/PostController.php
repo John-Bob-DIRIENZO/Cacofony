@@ -90,8 +90,19 @@ class PostController extends BaseController
      */
     public function getDeletePost(int $id)
     {
-        $postManager = new PostManager(PDOFactory::getInstance());
+        $manager = new PostManager(PDOFactory::getInstance());
         $where = array("column" => "idPost =", "value" => $id);
-        var_dump($postManager->delete($where));
+        var_dump($manager->delete($where));
+    }
+
+    /**
+     * @Route(path="/countPost", name="countPost")
+     * @return void
+     */
+    public function getCountPost()
+    {
+        $manager = new PostManager(PDOFactory::getInstance());
+        $where = array("column" => "idPost =", "value" => 1);
+        echo $manager->count($where);
     }
 }

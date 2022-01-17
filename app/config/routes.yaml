@@ -26,6 +26,10 @@
 #    path: /deletePost/{id}
 #    controller: \App\Controller\PostController
 #    action: deletePost
+#countPost:
+#    path: /countPost/
+#    controller: \App\Controller\PostController
+#    action: countPost
 #api:
 #    path: /api/{crudType}
 #    controller: \App\Controller\ApiController

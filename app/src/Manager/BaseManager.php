@@ -23,19 +23,19 @@ abstract class BaseManager
         return $req->execute();
     }
 
-    public function count($table) : int
+    public function count($wheres = null, $options = ["limit" => null, "order" => null]): int
     {
-        $req = $this->pdo->prepare( "SELECT COUNT(*) as count FROM $table");
-        $req->execute();
-        $result = $req->fetch();
-        return $result["count"];
+        $req = "SELECT COUNT(*) as count FROM $this->table";
+
+        $whereMaker = $this->whereMaker($wheres, $options);
+        $req .= $whereMaker["where"];
+
+        $req = $this->pdo->prepare( $req);
+        $req->execute($whereMaker["values"]);
+        return $req->fetch()["count"];
     }
 
-    private function resolveTableName() {
-       return str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
-    }
-
-    public function find($columns = "*", $wheres = null, $options = ["limit" => null, "order" => null]) {
+    public function find($columns = "*", $wheres = null, $options = ["limit" => null, "order" => null]): array {
         $req = "SELECT $columns FROM $this->table";
 
         $whereMaker = $this->whereMaker($wheres, $options);
@@ -46,7 +46,7 @@ abstract class BaseManager
         return $req->fetchAll();
     }
 
-    public function insert($objects) {
+    public function insert($objects): bool {
 
         $objects = (gettype($objects) == "array") ? $objects : [$objects];
         foreach ($objects as $object) {
@@ -67,7 +67,7 @@ abstract class BaseManager
         return $req->execute($preparedValues);
     }
 
-    public function update($datas, $wheres = null, $options = ["limit" => null, "order" => null]) {
+    public function update($datas, $wheres = null, $options = ["limit" => null, "order" => null]): bool {
         $req = "UPDATE $this->table SET ";
 
         $preparedValues = null;
@@ -86,7 +86,7 @@ abstract class BaseManager
         return $req->execute($preparedValues);
     }
 
-    public function delete($wheres = null, $options = ["limit" => null, "order" => null]) {
+    public function delete($wheres = null, $options = ["limit" => null, "order" => null]): bool {
         $req = "DELETE FROM $this->table";
         $whereMaker = $this->whereMaker($wheres, $options);
         $req .= $whereMaker["where"];
@@ -94,7 +94,7 @@ abstract class BaseManager
         return $req->execute($whereMaker["values"]);
     }
 
-    private function whereMaker($wheres, $options) {
+    private function whereMaker($wheres, $options): array {
         $req = null;
         $preparedValues = null;
 
@@ -121,5 +121,9 @@ abstract class BaseManager
             $req .= " LIMIT ".$options["limit"];
 
         return array("where" => $req, "values" => $preparedValues);
+    }
+
+    private function resolveTableName(): string {
+        return str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
     }
 }
