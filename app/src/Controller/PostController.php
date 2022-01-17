@@ -41,10 +41,10 @@ class PostController extends BaseController
     }
 
     /**
-     * @Route(path="/insertTest", name="insertTest")
+     * @Route(path="/insertPost", name="insertPost")
      * @return void
      */
-    public function getInsertTest()
+    public function getInsertPost()
     {
         $manager = new PostManager(PDOFactory::getInstance());
         $monPost = new Post(array(
@@ -55,5 +55,40 @@ class PostController extends BaseController
             ));
 
         if ($manager->insert($monPost)) echo "OK";
+    }
+
+    /**
+     * @Route(path="/updatePost", name="updatePost")
+     * @return void
+     */
+    public function getUpdatePost()
+    {
+        $manager = new PostManager(PDOFactory::getInstance());
+        $monPost = array(
+            "title" => "Test Update"
+        );
+        $where = array("column" => "idPost =", "value" => 2);
+
+        if ($manager->update($monPost, $where)) echo "OK";
+    }
+
+    /**
+     * @Route(path="/getPost/{id}", name="getPost")
+     * @return void
+     */
+    public function getPost(int $id)
+    {
+        $postManager = new PostManager(PDOFactory::getInstance());
+        var_dump($postManager->find("title", ["column" => "idPost !=", "value" => 1], ["limit" => 2, "order" => "idPost DESC"]));
+    }
+
+    /**
+     * @Route(path="/deletePost/{id}", name="deletePost")
+     * @return void
+     */
+    public function getDeletePost(int $id)
+    {
+        $postManager = new PostManager(PDOFactory::getInstance());
+        var_dump($postManager->delete(["column" => "idPost =", "value" => $id]));
     }
 }
