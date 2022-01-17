@@ -37,32 +37,12 @@ abstract class BaseManager
 
     public function find($columns = "*", $wheres = null, $options = ["limit" => null, "order" => null]) {
         $req = "SELECT $columns FROM $this->table";
-        $preparedValues = null;
 
-        if (!empty($wheres)) {
-            $req .= " WHERE ";
-            // Cas où il y a 1 seule condition
-            if (!empty($wheres["column"]) && !empty($wheres["value"])) {
-                $req .= " " . $wheres["column"] . " ? ";
-                $preparedValues[] = $wheres["value"];
-            }else { // Cas où il y'a plusieurs conditions where (foreach)
-                $i = 0;
-                foreach ($wheres as $where) {
-                    if ($i > 0) $req .= "AND";
-                    $req .= " " . $where["column"] . " ? ";
-                    $preparedValues[] = $where["value"];
-                    $i++;
-                }
-            }
-        } else $req .= " WHERE 1 ";
-
-        if (!empty($options["order"]))
-            $req .= " ORDER BY ".$options["order"];
-        if (!empty($options["limit"]))
-            $req .= " LIMIT ".$options["limit"];
+        $whereMaker = $this->whereMaker($wheres, $options);
+        $req .= $whereMaker["where"];
 
         $req = $this->pdo->prepare($req);
-        $req->execute($preparedValues);
+        $req->execute($whereMaker["values"]);
         return $req->fetchAll();
     }
 
@@ -98,27 +78,9 @@ abstract class BaseManager
             $preparedValues[] = $data;
         }
 
-        if (!empty($wheres)) {
-            $req .= " WHERE ";
-            // Cas où il y a 1 seule condition
-            if (!empty($wheres["column"]) && !empty($wheres["value"])) {
-                $req .= " " . $wheres["column"] . " ? ";
-                $preparedValues[] = $wheres["value"];
-            }else { // Cas où il y'a plusieurs conditions where (foreach)
-                $i = 0;
-                foreach ($wheres as $where) {
-                    if ($i > 0) $req .= "AND";
-                    $req .= " " . $where["column"] . " ? ";
-                    $preparedValues[] = $where["value"];
-                    $i++;
-                }
-            }
-        } else $req .= " WHERE 1 ";
-
-        if (!empty($options["order"]))
-            $req .= " ORDER BY ".$options["order"];
-        if (!empty($options["limit"]))
-            $req .= " LIMIT ".$options["limit"];
+        $whereMaker = $this->whereMaker($wheres, $options);
+        $req .= $whereMaker["where"];
+        $preparedValues = array_merge($preparedValues, $whereMaker["values"]);
 
         $req = $this->pdo->prepare($req);
         return $req->execute($preparedValues);
@@ -126,6 +88,14 @@ abstract class BaseManager
 
     public function delete($wheres = null, $options = ["limit" => null, "order" => null]) {
         $req = "DELETE FROM $this->table";
+        $whereMaker = $this->whereMaker($wheres, $options);
+        $req .= $whereMaker["where"];
+        $req = $this->pdo->prepare($req);
+        return $req->execute($whereMaker["values"]);
+    }
+
+    private function whereMaker($wheres, $options) {
+        $req = null;
         $preparedValues = null;
 
         if (!empty($wheres)) {
@@ -150,7 +120,6 @@ abstract class BaseManager
         if (!empty($options["limit"]))
             $req .= " LIMIT ".$options["limit"];
 
-        $req = $this->pdo->prepare($req);
-        return $req->execute($preparedValues);
+        return array("where" => $req, "values" => $preparedValues);
     }
 }
