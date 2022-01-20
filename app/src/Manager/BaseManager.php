@@ -100,19 +100,13 @@ abstract class BaseManager
 
         if (!empty($wheres)) {
             $req .= " WHERE ";
-            // Cas où il y a 1 seule condition
-            if (!empty($wheres["column"]) && !empty($wheres["value"])) {
-                $req .= " " . $wheres["column"] . " ? ";
-                $preparedValues[] = $wheres["value"];
-            }else { // Cas où il y'a plusieurs conditions where (foreach)
                 $i = 0;
-                foreach ($wheres as $where) {
+                foreach ($wheres as $column => $value) {
                     if ($i > 0) $req .= "AND";
-                    $req .= " " . $where["column"] . " ? ";
-                    $preparedValues[] = $where["value"];
+                    $req .= " " . $column . " ? ";
+                    $preparedValues[] = $value;
                     $i++;
                 }
-            }
         } else $req .= " WHERE 1 ";
 
         if (!empty($options["order"]))
