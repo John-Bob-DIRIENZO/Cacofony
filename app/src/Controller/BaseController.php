@@ -22,7 +22,7 @@ abstract class BaseController
      * @param string $template
      * @param array $args
      */
-    public function render(string $template, array $args)
+    public function render(string $template, array $args = null)
     {
         $loader = new FilesystemLoader('../templates');
         $twig = new Environment($loader);

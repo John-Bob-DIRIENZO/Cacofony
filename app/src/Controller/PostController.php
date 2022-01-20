@@ -16,7 +16,9 @@ class PostController extends BaseController
     {
         $manager = new PostManager(PDOFactory::getInstance());
 
-        $posts = $manager->findAllPosts();
+        $options = array("order" => "idPost DESC");
+        $posts = $manager->find("*", null, $options);
+
         $this->render('index.html.twig', ['posts' => $posts]);
     }
 
