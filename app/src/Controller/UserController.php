@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+
 use App\Core\Factory\PDOFactory;
-use App\Core\Helper\JwtHelper;
 use App\Manager\UserManager;
 use App\Entity\User;
 
@@ -14,6 +14,7 @@ class UserController extends BaseController
      * @return void
      */
     public function getLogin() {
+        if (!empty($this->user)) $this->redirect("/");
         $this->render('login.html.twig', ["title" => "Connexion"]);
     }
 
@@ -22,6 +23,7 @@ class UserController extends BaseController
      * @return void
      */
     public function getRegister() {
+        if (!empty($this->user)) $this->redirect("/");
         $this->render('register.html.twig', ["title" => "Inscription"]);
     }
 
@@ -42,10 +44,11 @@ class UserController extends BaseController
             $where = array(
                 "email" => $this->post["email"]
             );
-            $user = $manager->find("email, name, password", $where)[0];
+            $user = $manager->find("idUser, email, name, password", $where);
 
-            if (!empty($user) && password_verify($this->post["password"], $user["password"])) {
-                $this->alert("Connexion OK ! Bienvenue ".$user['name'], parent::ALERT_SUCCESS);
+            if (!empty($user) && password_verify($this->post["password"], $user[0]["password"])) {
+                $this->alert("Connexion réussie ! Bienvenue ".$user[0]['name'], parent::ALERT_SUCCESS);
+                Auth::generateJWT($user[0]["idUser"]);
                 $this->redirect("/"); die();
             }else {
                 $error .= "Email ou mot de passe erroné !";

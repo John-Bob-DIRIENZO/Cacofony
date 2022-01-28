@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\Helper\Auth;
 use \Twig\Loader\FilesystemLoader;
 use \Twig\Environment;
 
@@ -11,6 +12,7 @@ abstract class BaseController
     public array $get;
     public array $files;
     public array $session;
+    public mixed $user;
 
     public const ALERT_SUCCESS = "green";
     public const ALERT_INFO = "blue";
@@ -19,6 +21,10 @@ abstract class BaseController
 
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
+        if (isset($_COOKIE["token"]) && empty($_SESSION['jwt'])) $_SESSION["jwt"] = $_COOKIE["token"];
+        if (!empty($_SESSION["jwt"]))
+            $this->user = Auth::checkAuthorizationJWT() ?? false;
+
         $this->post = $_POST;
         $this->get = $_GET;
         $this->files = $_FILES;
@@ -47,6 +53,8 @@ abstract class BaseController
         }
 
         $args["alerts"] = (isset($_SESSION["alerts"])) ? $_SESSION["alerts"] : [];
+        $args["user"] = $this->user;
+
         echo $twig->render($template, $args);
         if (!empty($_SESSION["alerts"])) unset($_SESSION["alerts"]);
         exit;
