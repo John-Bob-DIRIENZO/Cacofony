@@ -2,30 +2,22 @@
 #    path: /
 #    controller: \App\Controller\PostController
 #    action: home
-#showOne:
-#    path: /show/{id}-{truc}
-#    controller: \App\Controller\PostController
-#    action: show
-#showTest:
-#    path: /show
-#    controller: \App\Controller\PostController
-#    action: showTest
 #insertPost:
 #    path: /insertPost
 #    controller: \App\Controller\PostController
 #    action: insertTest
 #updatePost:
-#    path: /updatePost
+#    path: /updatePost/{id}
 #    controller: \App\Controller\PostController
 #    action: updatePost
-#showPost:
-#    path: /getPost/{id}
-#    controller: \App\Controller\PostController
-#    action: getPost
 #deletePost:
 #    path: /deletePost/{id}
 #    controller: \App\Controller\PostController
 #    action: deletePost
+#showPost:
+#    path: /getPost/{id}
+#    controller: \App\Controller\PostController
+#    action: getPost
 #countPost:
 #    path: /countPost/
 #    controller: \App\Controller\PostController

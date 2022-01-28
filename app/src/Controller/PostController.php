@@ -23,56 +23,6 @@ class PostController extends BaseController
     }
 
     /**
-     * @Route(path="/show/{id}-{truc}", name="showOne")
-     * @param int $id
-     * @param string $truc
-     * @return void
-     */
-    public function getShow(int $id, string $truc)
-    {
-        $this->renderJSON(['message' => $truc, 'parametre' => $id]);
-    }
-
-    /**
-     * @Route(path="/show")
-     * @return void
-     */
-    public function getShowTest()
-    {
-        echo 'je suis bien la bonne méthode';
-    }
-
-    /**
-     * @Route(path="/insertPost", name="insertPost")
-     * @return void
-     */
-    public function getInsertPost()
-    {
-        $manager = new PostManager(PDOFactory::getInstance());
-        $monPost = new Post(array(
-            "title" => "Test BDD",
-            "content" => "Yoloo",
-            "authorId" => 1,
-            "createdAt" => date("Y-m-d")
-            ));
-        if ($manager->insert($monPost)) echo "OK";
-    }
-
-    /**
-     * @Route(path="/updatePost", name="updatePost")
-     * @return void
-     */
-    public function getUpdatePost()
-    {
-        $manager = new PostManager(PDOFactory::getInstance());
-        $monPost = array(
-            "title" => "Test Update"
-        );
-        $where = array("column" => "idPost =", "value" => 2);
-        if ($manager->update($monPost, $where)) echo "OK";
-    }
-
-    /**
      * @Route(path="/getPost/{id}", name="getPost")
      * @return void
      */
@@ -80,10 +30,43 @@ class PostController extends BaseController
     {
         $postManager = new PostManager(PDOFactory::getInstance());
         $columns = "idPost, title, content";
-        $where = array("column" => "idPost !=", "value" => 1);
+        $where = array("idPost !=" => 1, "title !=" => "Test");
         $options = array("limit" => 2, "order" => "idPost DESC");
         $foundPost = $postManager->find($columns, $where, $options);
-        var_dump($foundPost);
+        $this->render('index.html.twig', ['posts' => $foundPost]);
+    }
+
+    /**
+     * @Route(path="/insertPost", name="insertPost")
+     * @return void
+     */
+    public function postInsertPost()
+    {
+        $manager = new PostManager(PDOFactory::getInstance());
+        $monPost = new Post(array(
+            "title" => $this->post["title"],
+            "content" => $this->post["content"],
+            "authorId" => $this->post["authodId"],
+            "createdAt" => date("Y-m-d")
+            ));
+        $manager->insert($monPost);
+        $this->redirect("/");
+    }
+
+    /**
+     * @Route(path="/updatePost/{id}", name="updatePost")
+     * @return void
+     */
+    public function postUpdatePost(int $id)
+    {
+        $manager = new PostManager(PDOFactory::getInstance());
+        $monPost = array(
+            "title" => $this->post["title"],
+            "content" => $this->post["content"]
+        );
+        $where = array("idPost =" => $id);
+        $manager->update($monPost, $where);
+        $this->redirect("/");
     }
 
     /**
@@ -93,8 +76,9 @@ class PostController extends BaseController
     public function getDeletePost(int $id)
     {
         $manager = new PostManager(PDOFactory::getInstance());
-        $where = array("column" => "idPost =", "value" => $id);
-        var_dump($manager->delete($where));
+        $where = array("idPost =" => $id);
+        $manager->delete($where);
+        $this->redirect("/");
     }
 
     /**
@@ -104,7 +88,7 @@ class PostController extends BaseController
     public function getCountPost()
     {
         $manager = new PostManager(PDOFactory::getInstance());
-        $where = array("column" => "idPost =", "value" => 1);
+        $where = array("idPost >" => 0);
         echo $manager->count($where);
     }
 }

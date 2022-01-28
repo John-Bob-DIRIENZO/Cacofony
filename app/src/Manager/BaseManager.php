@@ -14,7 +14,7 @@ abstract class BaseManager
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
-        $this->table = $this->resolveTableName();
+        $this->table = str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
     }
 
     public function tableExist($table): bool
@@ -100,19 +100,13 @@ abstract class BaseManager
 
         if (!empty($wheres)) {
             $req .= " WHERE ";
-            // Cas où il y a 1 seule condition
-            if (!empty($wheres["column"]) && !empty($wheres["value"])) {
-                $req .= " " . $wheres["column"] . " ? ";
-                $preparedValues[] = $wheres["value"];
-            }else { // Cas où il y'a plusieurs conditions where (foreach)
                 $i = 0;
-                foreach ($wheres as $where) {
+                foreach ($wheres as $column => $value) {
                     if ($i > 0) $req .= "AND";
-                    $req .= " " . $where["column"] . " ? ";
-                    $preparedValues[] = $where["value"];
+                    $req .= " " . $column . " ? ";
+                    $preparedValues[] = $value;
                     $i++;
                 }
-            }
         } else $req .= " WHERE 1 ";
 
         if (!empty($options["order"]))
@@ -123,7 +117,4 @@ abstract class BaseManager
         return array("where" => $req, "values" => $preparedValues);
     }
 
-    private function resolveTableName(): string {
-        return str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
-    }
 }
