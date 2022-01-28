@@ -45,8 +45,8 @@ class UserController extends BaseController
             $user = $manager->find("email, name, password", $where)[0];
 
             if (!empty($user) && password_verify($this->post["password"], $user["password"])) {
-                $this->alert("Connexion OK ! Bienvenue".$user['name'], parent::ALERT_ERROR);
-                $this->redirect("/");
+                $this->alert("Connexion OK ! Bienvenue ".$user['name'], parent::ALERT_SUCCESS);
+                $this->redirect("/"); die();
             }else {
                 $error .= "Email ou mot de passe erroné !";
             }
