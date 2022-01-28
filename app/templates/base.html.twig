@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
 </head>
 <body>
-{% block body %}{% endblock %}
+<div class="min-h-full">
+    {% include './includes/_navbar.html.twig' %}
+    {% include './includes/_layout_header.html.twig' with { title: 'Articles récents'} %} {# used to be the current requested page #}
+    <main>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            {% block body %}{% endblock %}
+        </div>
+    </main>
+</div>
+
 </body>
 </html>
