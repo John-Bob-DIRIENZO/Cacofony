@@ -24,7 +24,6 @@ class Auth
         ];
 
         $jwt = JWT::encode($data, $secretKey, 'HS512');
-        setcookie("token", $jwt, $expire, "", $serverName);
         $_SESSION["jwt"] = $jwt;
     }
 

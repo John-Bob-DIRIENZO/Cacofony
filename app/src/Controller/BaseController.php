@@ -21,7 +21,6 @@ abstract class BaseController
 
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
-        if (isset($_COOKIE["token"]) && empty($_SESSION['jwt'])) $_SESSION["jwt"] = $_COOKIE["token"];
         if (!empty($_SESSION["jwt"]))
             $this->user = Auth::checkAuthorizationJWT() ?? false;
 
