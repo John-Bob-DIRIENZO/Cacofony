@@ -3,14 +3,10 @@
 
 {% block body %}
 
-    <form action="register" method="post">
+    <form action="login" method="post">
         <div class="flex flex-col align-center mx-auto justify-center bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm">
             <div class="space-y-4">
-                <h1 class="text-center text-2xl font-semibold text-gray-600">Inscription</h1>
-                <div>
-                    <label for="name" class="block mb-1 text-gray-600 font-semibold">Nom <span style="color:red;">*</span></label>
-                    <input type="text" name="name" class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full" placeholder="Jean Mario"/>
-                </div>
+                <h1 class="text-center text-2xl font-semibold text-gray-600">Connexion</h1>
                 <div>
                     <label for="email" class="block mb-1 text-gray-600 font-semibold">Email <span style="color:red;">*</span></label>
                     <input type="text" name="email" class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full" placeholder="jean@exemple.com"/>
@@ -20,7 +16,7 @@
                     <input type="password" name="password" class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full" placeholder="**********" />
                 </div>
             </div>
-            <input type="submit" role="button" value="S'inscrire" class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide">
+            <input type="submit" role="button" value="Connexion" class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide">
         </div>
     </form>
 

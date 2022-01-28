@@ -43,6 +43,7 @@ abstract class BaseManager
 
         $req = $this->pdo->prepare($req);
         $req->execute($whereMaker["values"]);
+
         return $req->fetchAll();
     }
 
@@ -103,7 +104,7 @@ abstract class BaseManager
                 $i = 0;
                 foreach ($wheres as $column => $value) {
                     if ($i > 0) $req .= "AND";
-                    $req .= " " . $column . " ? ";
+                    $req .= " " . $column . " = ? ";
                     $preparedValues[] = $value;
                     $i++;
                 }

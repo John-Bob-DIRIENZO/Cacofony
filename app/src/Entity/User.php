@@ -8,7 +8,7 @@ class User extends BaseEntity
     private string $name;
     private string $email;
     private string $password;
-    private boolean $isAdmin;
+    private bool $isAdmin;
 
     /**
      * @return int
@@ -71,7 +71,7 @@ class User extends BaseEntity
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     /**

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
@@ -13,8 +14,10 @@
     {% if title %}
         {% include './includes/_layout_header.html.twig' with { title: (title) ? title : 'Articles récents'} %} {# used to be the current requested page #}
     {% endif %}
+
     <main>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            {% include './includes/_alerts.html.twig' %}
             {% block body %}{% endblock %}
         </div>
     </main>

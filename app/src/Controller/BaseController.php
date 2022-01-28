@@ -7,12 +7,23 @@ use \Twig\Environment;
 
 abstract class BaseController
 {
-    public $post;
-    public $get;
-    public $files;
+    public array $post;
+    public array $get;
+    public array $files;
+    public array $session;
+
+    public const ALERT_SUCCESS = "green";
+    public const ALERT_INFO = "blue";
+    public const ALERT_WARNING = "yellow";
+    public const ALERT_ERROR = "red";
 
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
+        $this->post = $_POST;
+        $this->get = $_GET;
+        $this->files = $_FILES;
+        $this->session = $_SESSION;
+
         $callable = strtolower($method) . ucfirst($action);
 
         if (!is_callable([$this, $callable])) {
@@ -20,10 +31,6 @@ abstract class BaseController
         }
 
         call_user_func_array([$this, $callable], $params);
-
-        $this->post = $_POST;
-        $this->get = $_GET;
-        $this->files = $_FILES;
     }
 
     /**
@@ -39,7 +46,9 @@ abstract class BaseController
             ${$key} = $variable;
         }
 
+        $args["alerts"] = (isset($_SESSION["alerts"])) ? $_SESSION["alerts"] : [];
         echo $twig->render($template, $args);
+        if (!empty($_SESSION["alerts"])) unset($_SESSION["alerts"]);
         exit;
     }
 
@@ -50,7 +59,11 @@ abstract class BaseController
         exit;
     }
 
-    public function redirect($url) {
+    public function redirect(string $url) {
         header("Location: $url");
+    }
+
+    public function alert(string $message, $type = "green") {
+        $_SESSION["alerts"][] = array($type, nl2br($message));
     }
 }
