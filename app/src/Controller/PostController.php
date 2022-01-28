@@ -33,34 +33,36 @@ class PostController extends BaseController
         $where = array("idPost !=" => 1, "title !=" => "Test");
         $options = array("limit" => 2, "order" => "idPost DESC");
         $foundPost = $postManager->find($columns, $where, $options);
-        var_dump($foundPost);
+        $this->render('index.html.twig', ['posts' => $foundPost]);
     }
 
     /**
      * @Route(path="/insertPost", name="insertPost")
      * @return void
      */
-    public function getInsertPost()
+    public function postInsertPost()
     {
         $manager = new PostManager(PDOFactory::getInstance());
         $monPost = new Post(array(
-            "title" => "Test BDD",
-            "content" => "Yoloo",
-            "authorId" => 1,
+            "title" => $this->post["title"],
+            "content" => $this->post["content"],
+            "authorId" => $this->post["authodId"],
             "createdAt" => date("Y-m-d")
             ));
-        if ($manager->insert($monPost)) echo "OK";
+        $manager->insert($monPost);
+        $this->redirect("/");
     }
 
     /**
      * @Route(path="/updatePost/{id}", name="updatePost")
      * @return void
      */
-    public function getUpdatePost(int $id)
+    public function postUpdatePost(int $id)
     {
         $manager = new PostManager(PDOFactory::getInstance());
         $monPost = array(
-            "title" => "Test Update"
+            "title" => $this->post["title"],
+            "content" => $this->post["content"]
         );
         $where = array("idPost =" => $id);
         $manager->update($monPost, $where);
