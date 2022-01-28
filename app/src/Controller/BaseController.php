@@ -7,6 +7,10 @@ use \Twig\Environment;
 
 abstract class BaseController
 {
+    public $post;
+    public $get;
+    public $files;
+
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
         $callable = strtolower($method) . ucfirst($action);
@@ -16,6 +20,10 @@ abstract class BaseController
         }
 
         call_user_func_array([$this, $callable], $params);
+
+        $this->post = $_POST;
+        $this->get = $_GET;
+        $this->files = $_FILES;
     }
 
     /**
@@ -42,4 +50,7 @@ abstract class BaseController
         exit;
     }
 
+    public function redirect($url) {
+        header("Location: $url");
+    }
 }

@@ -23,23 +23,17 @@ class PostController extends BaseController
     }
 
     /**
-     * @Route(path="/show/{id}-{truc}", name="showOne")
-     * @param int $id
-     * @param string $truc
+     * @Route(path="/getPost/{id}", name="getPost")
      * @return void
      */
-    public function getShow(int $id, string $truc)
+    public function getPost(int $id)
     {
-        $this->renderJSON(['message' => $truc, 'parametre' => $id]);
-    }
-
-    /**
-     * @Route(path="/show")
-     * @return void
-     */
-    public function getShowTest()
-    {
-        echo 'je suis bien la bonne méthode';
+        $postManager = new PostManager(PDOFactory::getInstance());
+        $columns = "idPost, title, content";
+        $where = array("idPost !=" => 1, "title !=" => "Test");
+        $options = array("limit" => 2, "order" => "idPost DESC");
+        $foundPost = $postManager->find($columns, $where, $options);
+        var_dump($foundPost);
     }
 
     /**
@@ -59,31 +53,18 @@ class PostController extends BaseController
     }
 
     /**
-     * @Route(path="/updatePost", name="updatePost")
+     * @Route(path="/updatePost/{id}", name="updatePost")
      * @return void
      */
-    public function getUpdatePost()
+    public function getUpdatePost(int $id)
     {
         $manager = new PostManager(PDOFactory::getInstance());
         $monPost = array(
             "title" => "Test Update"
         );
-        $where = array("idPost =" => 2);
-        if ($manager->update($monPost, $where)) echo "OK";
-    }
-
-    /**
-     * @Route(path="/getPost/{id}", name="getPost")
-     * @return void
-     */
-    public function getPost(int $id)
-    {
-        $postManager = new PostManager(PDOFactory::getInstance());
-        $columns = "idPost, title, content";
-        $where = array("idPost !=" => 1, "title !=" => "Test");
-        $options = array("limit" => 2, "order" => "idPost DESC");
-        $foundPost = $postManager->find($columns, $where, $options);
-        var_dump($foundPost);
+        $where = array("idPost =" => $id);
+        $manager->update($monPost, $where);
+        $this->redirect("/");
     }
 
     /**
@@ -94,7 +75,8 @@ class PostController extends BaseController
     {
         $manager = new PostManager(PDOFactory::getInstance());
         $where = array("idPost =" => $id);
-        var_dump($manager->delete($where));
+        $manager->delete($where);
+        $this->redirect("/");
     }
 
     /**

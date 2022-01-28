@@ -14,7 +14,7 @@ abstract class BaseManager
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
-        $this->table = $this->resolveTableName();
+        $this->table = str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
     }
 
     public function tableExist($table): bool
@@ -117,7 +117,4 @@ abstract class BaseManager
         return array("where" => $req, "values" => $preparedValues);
     }
 
-    private function resolveTableName(): string {
-        return str_replace("Manager", "", (new \ReflectionClass($this))->getShortName());
-    }
 }
