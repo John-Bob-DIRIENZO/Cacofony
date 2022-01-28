@@ -10,7 +10,9 @@
 <body>
 <div class="min-h-full">
     {% include './includes/_navbar.html.twig' %}
-    {% include './includes/_layout_header.html.twig' with { title: 'Articles récents'} %} {# used to be the current requested page #}
+    {% if title %}
+        {% include './includes/_layout_header.html.twig' with { title: (title) ? title : 'Articles récents'} %} {# used to be the current requested page #}
+    {% endif %}
     <main>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             {% block body %}{% endblock %}

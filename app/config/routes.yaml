@@ -26,3 +26,11 @@
 #    path: /api/{crudType}
 #    controller: \App\Controller\ApiController
 #    action: api
+#login:
+#    path: /login
+#    controller: \App\Controller\UserController
+#    action: login
+#register:
+#    path: /register
+#    controller: \App\Controller\UserController
+#    action: register
