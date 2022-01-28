@@ -8,7 +8,7 @@ class User extends BaseEntity
     private string $name;
     private string $email;
     private string $password;
-    private bool $isAdmin;
+    private string $roles;
 
     /**
      * @return int
@@ -75,19 +75,19 @@ class User extends BaseEntity
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isAdmin()
+    public function getRoles()
     {
-        return $this->isAdmin;
+        return $this->roles;
     }
 
     /**
-     * @param bool $isAdmin
+     * @param string $roles
      */
-    public function setIsAdmin($isAdmin)
+    public function setRoles($roles)
     {
-        $this->isAdmin = $isAdmin;
+        $this->roles = $roles;
     }
 
 }
