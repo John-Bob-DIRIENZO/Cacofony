@@ -12,7 +12,7 @@ abstract class BaseController
     public array $get;
     public array $files;
     public array $session;
-    public mixed $user;
+    public mixed $user = null;
 
     public const ALERT_SUCCESS = "green";
     public const ALERT_INFO = "blue";
@@ -22,7 +22,7 @@ abstract class BaseController
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
         if (!empty($_SESSION["jwt"]))
-            $this->user = Auth::checkAuthorizationJWT() ?? false;
+            $this->user = Auth::checkAuthorizationJWT();
 
         $this->post = $_POST;
         $this->get = $_GET;

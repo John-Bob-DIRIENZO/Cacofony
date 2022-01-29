@@ -33,7 +33,7 @@ class Auth
         try {
             $userId = JWT::decode($_SESSION["jwt"], $_ENV['SECRET_KEY'], ['HS512']);
         } catch (\Exception $e) {
-            return false;
+            return null;
         }
 
         $now = new \DateTimeImmutable();
@@ -41,7 +41,7 @@ class Auth
 
         if ($userId->iss !== $serverName || $userId->nbf > $now->getTimestamp() || $userId->exp < $now->getTimestamp())
         {
-            return false;
+            return null;
         }else {
             $manager = new UserManager(PDOFactory::getInstance());
 
@@ -49,7 +49,7 @@ class Auth
                 "idUser" => $userId->userName
             );
             $user = $manager->find("idUser, email, name, roles", $where, array("limit" => 1));
-            return $user[0] ?? false;
+            return $user[0] ?? null;
         }
     }
 
