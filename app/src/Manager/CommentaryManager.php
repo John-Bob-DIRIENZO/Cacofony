@@ -11,9 +11,9 @@ class CommentaryManager extends BaseManager
   public function getCommentariesByPostId(int $articleId)
   {
     $statement = $this->pdo->prepare("
-        SELECT Commentaries.id, articleId, content, createdAt, Commentaries.userId, usar.lastname
+        SELECT Commentaries.id, articleId, content, createdAt, Commentaries.userId, users.lastname
         FROM Commentaries
-        LEFT JOIN usar on usar.id = Commentaries.userId
+        LEFT JOIN users on users.id = Commentaries.userId
         WHERE Commentaries.articleId = $articleId
     ");
     $statement->execute();

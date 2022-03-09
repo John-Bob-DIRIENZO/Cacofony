@@ -12,7 +12,7 @@
 
 <body>
 
-    <div class="xl:container mt-5 m-auto">
+    <div class="xl:container my-10 m-auto">
         <?= $content; ?>
     </div>
 
