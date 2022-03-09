@@ -8,24 +8,47 @@ use DateTime;
 
 class CommentaryManager extends BaseManager
 {
-  public function postCommentary(int $articleId, int $userId, string $content, string $createdAt)
+  public function getCommentariesByPostId(int $articleId)
+  {
+    $statement = $this->pdo->prepare("
+        SELECT Commentaries.id, articleId, content, createdAt, Commentaries.userId, usar.lastname
+        FROM Commentaries
+        LEFT JOIN usar on usar.id = Commentaries.userId
+        WHERE Commentaries.articleId = $articleId
+    ");
+    $statement->execute();
+    $statement->setFetchMode(\PDO::FETCH_ASSOC);
+    
+    $results = $statement->fetchAll();
+
+    return $results ?? [];
+  }
+
+  // public function getUserById(int $userId)
+  // {
+  //   $statement = $this->pdo->prepare("
+  //       SELECT lastname
+  //       FROM usar
+  //       WHERE usar.id = $userId
+  //   ");
+
+  //   $statement->execute();
+  //   $statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+  //   $results = $statement->fetch();
+
+  //   return $results ?? '';
+  // }
+  
+  public function postCommentary(int $articleId, int $userId, string $content)
+
     {
-      $query = 'INSERT INTO Commentaries (articlesId, userId, content, createdAt) VALUES ('. $articleId .', '. $userId .', '. $content .', '. $createdAt .')';
+      $query = "INSERT INTO `Commentaries`(`articleId`, `userId`, `content`, `createdAt`) VALUES ($articleId, $userId, '$content')";
+    
+    
       $stmnt = $this->pdo->prepare($query);
-
-      return $stmnt->execute();
+      $stmnt->execute();
+      return;
     }
-
-  // public function postCommentary($commentary)
-  //   {
-  //     $query = $this->db->prepare('INSERT INTO comment (userId, articleId, content) VALUES (:userId, :articleId, :content)');
-  //     $query->bindValue(':userId', $commentary['userId'], \PDO::PARAM_INT);
-  //     $query->bindValue(':articleId', $commentary['articleId'], \PDO::PARAM_INT);
-  //     $query->bindValue(':createdAt', $commentary['createdAt'], \PDO::PARAM_INT);
-  //     $query->bindValue(':content', nl2br(htmlspecialchars($commentary['content'])), \PDO::PARAM_STR);
-
-  //     var_dump($query);
-  //     return $query->execute();
-  //   }
 
 }

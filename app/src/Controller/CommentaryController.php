@@ -54,12 +54,11 @@ class CommentaryController extends BaseController
   /**
    * @Route(path="/post/{id}/comment")
    */
-    public function postCommentary(CommentaryManager $commentaryManager){
+    public function postCommentary(int $id, CommentaryManager $commentaryManager){
       return $commentaryManager->postCommentary(
-          $_POST['articleId'],
-          $_POST['userId'],
-          $_POST['comment'],
-          (new \DateTime())->format('Y-m-d H:i:s')
+        $id,
+        1,
+        $_POST['content']
       );
     }
 }

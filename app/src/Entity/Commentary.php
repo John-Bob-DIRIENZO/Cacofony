@@ -112,4 +112,5 @@ class Commentary extends BaseEntity
 
       return $this;
     }
+
 }

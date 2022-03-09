@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\BaseClasse\BaseController;
+use App\Manager\CommentaryManager;
 use App\Manager\PostManager;
 use App\Service\ExampleService;
 
@@ -31,13 +32,17 @@ class PostController extends BaseController
      * @param PostManager $postManager
      * @return void
      */
-    public function getShow(int $id, string $truc, PostManager $postManager)
+    public function getShow(int $id, string $truc, PostManager $postManager, CommentaryManager $commentaryManager)
     {
+        /** @var Post $post */
         $post = $postManager->findOneBy('id', $id);
+
         if (!$post) {
             $this->HTTPResponse->redirect('/');
         }
-        $this->render('Frontend/showOne', ['post' => $post], $truc);
+
+        $commentaries = $commentaryManager->getCommentariesByPostId($post->getId());
+        $this->render('Frontend/showOne', ['post' => $post, 'commentaries' => $commentaries ], $post->getTitle());
     }
 
     /**
