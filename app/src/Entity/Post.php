@@ -12,6 +12,7 @@ class Post extends BaseEntity
     private DateTime $createdAt;
     private string $title;
     private string $content;
+    private string $image;
     private int $authorId;
 
     /**
@@ -86,7 +87,27 @@ class Post extends BaseEntity
         $this->content = $content;
         return $this;
     }
+    
+    /**
+     * @return string
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
 
+    /**
+     * Set the value of image
+     * @param string $image
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+    
     /**
      * @return int
      */
@@ -104,6 +125,5 @@ class Post extends BaseEntity
         $this->authorId = $authorId;
         return $this;
     }
-
 
 }
