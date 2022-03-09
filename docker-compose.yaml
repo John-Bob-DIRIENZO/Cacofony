@@ -2,6 +2,7 @@ version: '3.1'
 
 services:
     php:
+        container_name: front_php
         build:
             context: .
             dockerfile: Dockerfile
@@ -15,6 +16,7 @@ services:
 
     db:
         image: 'mariadb:10.6.4'
+        container_name: back_mysql
         restart: always
         environment:
             # See .env file
