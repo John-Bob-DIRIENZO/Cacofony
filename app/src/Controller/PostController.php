@@ -45,6 +45,30 @@ class PostController extends BaseController
         $this->render('Frontend/showOne', ['post' => $post, 'commentaries' => $commentaries ], $post->getTitle());
     }
 
+        /**
+     * @Route(path="/createPost", name="createPost")
+     * @param int $id
+     * @param string $truc
+     * @param PostManager $postManager
+     * @return void
+     */
+    public function getPostPage()
+    {
+        $this->render('Frontend/createPost', [], "Make your Post !");
+    }
+
+    /**
+     * @Route(path="/post/{id}/create")
+     */
+    public function postPost(PostManager $postManager){
+        return $postManager->postPost(
+        1,
+        $_POST['title'],
+        $_POST['image'],
+        $_POST['content']
+        );
+    }
+
     /**
      * @Route(path="/show")
      * @return void

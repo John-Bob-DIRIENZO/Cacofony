@@ -15,6 +15,7 @@ class CommentaryManager extends BaseManager
         FROM Commentaries
         LEFT JOIN users on users.id = Commentaries.userId
         WHERE Commentaries.articleId = $articleId
+        ORDER BY createdAt DESC
     ");
     $statement->execute();
     $statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -43,12 +44,10 @@ class CommentaryManager extends BaseManager
   public function postCommentary(int $articleId, int $userId, string $content)
 
     {
-      $query = "INSERT INTO `Commentaries`(`articleId`, `userId`, `content`, `createdAt`) VALUES ($articleId, $userId, '$content')";
-    
-    
+      $query = "INSERT INTO `Commentaries`(`articleId`, `userId`, `content`) VALUES ($articleId, $userId, '$content')";
       $stmnt = $this->pdo->prepare($query);
       $stmnt->execute();
-      return;
+      
     }
 
 }
