@@ -18,7 +18,7 @@ use App\Entity\Post;
     </div>
 <?php endif; ?>
 
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"><a href="/post/create">Créer un article</a></button>
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"><a href="/createPost">Créer un article</a></button>
 
 <div>
     <h1 class="flex justify-center font-bold text-3xl my-10">Vous trouverez tout vos articles de culs préférés ici</h1>

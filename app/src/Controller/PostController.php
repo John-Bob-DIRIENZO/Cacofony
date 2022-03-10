@@ -60,8 +60,8 @@ class PostController extends BaseController
     /**
      * @Route(path="/post/{id}/create")
      */
-    public function postPost(PostManager $postManager){
-        return $postManager->postPost(
+    public function postCreate(PostManager $postManager){
+        return $postManager->postCreate(
         1,
         $_POST['title'],
         $_POST['image'],
